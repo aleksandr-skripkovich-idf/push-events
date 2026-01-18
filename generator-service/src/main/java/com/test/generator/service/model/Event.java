@@ -31,7 +31,6 @@ public class Event {
 
     private String sourceService;
 
-//    @Column(name = "created_at", columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private LocalDateTime createdAt;
 
     private boolean processed;

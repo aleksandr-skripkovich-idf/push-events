@@ -19,8 +19,8 @@ public class EventConfirmationListener {
     }
 
     @KafkaListener(
-            topics = "events.confirmed",
-            groupId = "generator"
+            topics = "${spring.kafka.topics.events-confirmed}",
+            groupId = "${spring.kafka.consumer.group-id}"
     )
     @Transactional
     public void handle(EventConfirmedMessage message) {

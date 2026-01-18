@@ -12,7 +12,6 @@
 
     <modules>
         <module>generator-service</module>
-<!--        <module>registry-service</module>-->
     </modules>
 
     <properties>

@@ -34,9 +34,9 @@ public class EventConfirmedMessage {
 
     @Override
     public String toString() {
-        return "EventCreatedMessage{" +
+        return "EventConfirmedMessage{" +
                 "eventId=" + eventId +
-                ", confirmedAt='" + confirmedAt + '\'' +
+                ", confirmedAt=" + confirmedAt +
                 '}';
     }
 
