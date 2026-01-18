@@ -21,5 +21,15 @@ spring:
       events-created: events.created
       events-confirmed: events.confirmed
 
+  batch:
+    jdbc:
+      initialize-schema: always
+    job:
+      enabled: false
+
   server:
     port: 8889
+
+batch:
+  processing:
+    delay: 10000
