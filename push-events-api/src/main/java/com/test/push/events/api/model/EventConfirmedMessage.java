@@ -1,4 +1,4 @@
-package com.test.generator.service.model;
+package com.test.push.events.api.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;

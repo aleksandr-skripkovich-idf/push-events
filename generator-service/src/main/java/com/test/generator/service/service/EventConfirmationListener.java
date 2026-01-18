@@ -1,6 +1,6 @@
 package com.test.generator.service.service;
 
-import com.test.generator.service.model.EventConfirmedMessage;
+import com.test.push.events.api.model.EventConfirmedMessage;
 import com.test.generator.service.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.test.generator.service.model;
+package com.test.push.events.api.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,14 +7,14 @@ import java.util.UUID;
 public class EventCreatedMessage {
 
     private UUID eventId;
-    private String eventType;
+    private EventType eventType;
     private String sourceService;
     private LocalDateTime createdAt;
     private String payload;
 
     public EventCreatedMessage() {}
 
-    public EventCreatedMessage(UUID eventId, String eventType, String sourceService,
+    public EventCreatedMessage(UUID eventId, EventType eventType, String sourceService,
                                LocalDateTime createdAt, String payload) {
         this.eventId = eventId;
         this.eventType = eventType;
@@ -31,11 +31,11 @@ public class EventCreatedMessage {
         this.eventId = eventId;
     }
 
-    public String getEventType() {
+    public EventType getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
+    public void setEventType(EventType eventType) {
         this.eventType = eventType;
     }
 

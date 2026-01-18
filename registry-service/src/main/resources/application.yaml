@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: registry-service
+
+  datasource:
+    url: jdbc:postgresql://postgres-registry:5432/registry
+    username: user
+    password: pass
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: registry-service
+      auto-offset-reset: earliest
+    topics:
+      events-created: events.created
+      events-confirmed: events.confirmed
+
+  server:
+    port: 8889

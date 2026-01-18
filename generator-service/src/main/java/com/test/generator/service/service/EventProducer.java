@@ -1,7 +1,8 @@
 package com.test.generator.service.service;
 
 import com.test.generator.service.model.Event;
-import com.test.generator.service.model.EventCreatedMessage;
+import com.test.push.events.api.model.EventCreatedMessage;
+import com.test.push.events.api.model.EventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,7 @@ public class EventProducer {
                 event.getId().toString(),
                 new EventCreatedMessage(
                         event.getId(),
-                        event.getType(),
+                        EventType.valueOf(event.getType()),
                         event.getSourceService(),
                         event.getCreatedAt(),
                         event.getPayload()

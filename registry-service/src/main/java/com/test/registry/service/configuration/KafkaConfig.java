@@ -1,4 +1,4 @@
-package com.test.generator.service.configuration;
+package com.test.registry.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,7 +12,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@EnableKafka
 public class KafkaConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
@@ -35,26 +33,26 @@ public class KafkaConfig {
     private String serviceName;
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, EventConfirmedMessage> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, EventConfirmedMessage> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, EventCreatedMessage> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, EventCreatedMessage> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
 
     @Bean
-    public KafkaTemplate<String, EventCreatedMessage> kafkaTemplate() {
-        ProducerFactory<String, EventCreatedMessage> factory = producerFactory();
+    public KafkaTemplate<String, EventConfirmedMessage> kafkaTemplate() {
+        ProducerFactory<String, EventConfirmedMessage> factory = producerFactory();
         return new KafkaTemplate<>(factory);
     }
 
-    private ProducerFactory<String, EventCreatedMessage> producerFactory() {
+    private ProducerFactory<String, EventConfirmedMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         ObjectMapper mapper = new ObjectMapper();
 
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        JsonSerializer<EventCreatedMessage> serializer = new JsonSerializer<>(mapper);
+        JsonSerializer<EventConfirmedMessage> serializer = new JsonSerializer<>(mapper);
 
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -62,7 +60,7 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 
-    private ConsumerFactory<String, EventConfirmedMessage> consumerFactory() {
+    private ConsumerFactory<String, EventCreatedMessage> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, serviceName);
@@ -70,6 +68,6 @@ public class KafkaConfig {
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-                new JsonDeserializer<>(EventConfirmedMessage.class));
+                new JsonDeserializer<>(EventCreatedMessage.class));
     }
 }
