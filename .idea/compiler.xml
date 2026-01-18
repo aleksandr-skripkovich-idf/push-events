@@ -6,9 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="registry-service" />
         <module name="push-events-api" />
         <module name="generator-service" />
+        <module name="registry-service" />
+        <module name="saga-orchestrator" />
       </profile>
     </annotationProcessing>
   </component>

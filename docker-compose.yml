@@ -35,6 +35,15 @@ services:
     ports:
       - "5434:5432"
 
+  postgres-saga:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: saga
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5435:5432"
+
   generator-service:
     build:
       context: .
@@ -62,3 +71,16 @@ services:
     depends_on:
       - kafka
       - postgres-registry
+
+  saga-orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - SERVICE_NAME=saga-orchestrator
+    ports:
+      - "8082:8890"
+    environment:
+      - SERVER_PORT=8890
+    depends_on:
+      - postgres-saga

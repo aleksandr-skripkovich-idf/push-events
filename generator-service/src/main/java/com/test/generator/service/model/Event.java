@@ -1,15 +1,16 @@
 package com.test.generator.service.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "events")
+@Table(name = "events",
+        indexes = {
+        @Index(name = "idx_events_type", columnList = "type"),
+        @Index(name = "idx_events_created_at", columnList = "createdAt"),
+})
 public class Event {
 
     public Event() {

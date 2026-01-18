@@ -14,6 +14,7 @@
         <module>push-events-api</module>
         <module>generator-service</module>
         <module>registry-service</module>
+        <module>saga-orchestrator</module>
     </modules>
 
     <properties>

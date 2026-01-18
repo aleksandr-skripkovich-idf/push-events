@@ -5,6 +5,7 @@ COPY pom.xml .
 COPY push-events-api ./push-events-api
 COPY generator-service ./generator-service
 COPY registry-service ./registry-service
+COPY saga-orchestrator ./saga-orchestrator
 RUN mvn clean package -DskipTests -pl ${SERVICE_NAME} -am
 
 FROM eclipse-temurin:21-jre-jammy

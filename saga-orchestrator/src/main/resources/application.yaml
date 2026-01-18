@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: saga-orchestrator
+
+  datasource:
+    url: jdbc:postgresql://postgres-saga:5432/saga
+    username: user
+    password: pass
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  server:
+    port: 8890
+
+saga:
+  failure:
+    probability: 0.3

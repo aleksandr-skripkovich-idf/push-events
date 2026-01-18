@@ -3,13 +3,18 @@ package com.test.registry.service.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "registered_events")
+@Table(name = "registered_events", indexes = {
+        @Index(name = "idx_reg_events_registered_at", columnList = "registeredAt"),
+        @Index(name = "idx_reg_events_event_type", columnList = "eventType"),
+        @Index(name = "idx_reg_events_source_service", columnList = "sourceService")
+})
 public class RegisteredEvent {
 
     public RegisteredEvent() {
