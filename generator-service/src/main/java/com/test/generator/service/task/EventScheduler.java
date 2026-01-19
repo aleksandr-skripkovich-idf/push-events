@@ -35,7 +35,7 @@ public class EventScheduler {
         this.producer = producer;
     }
 
-    @Scheduled(fixedDelayString = "${event.generation.delay:5000}")
+    @Scheduled(fixedDelayString = "${event.generation.delay:10000}")
     @Transactional
     public void generate() {
         EventType eventType = getRandomEventType();

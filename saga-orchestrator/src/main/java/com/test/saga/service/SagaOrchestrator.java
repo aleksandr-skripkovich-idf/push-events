@@ -24,7 +24,7 @@ public class SagaOrchestrator {
 
     private final SagaTransactionRepository transactionRepository;
     private final SagaStepRepository stepRepository;
-    private final Map<String, StepHandler> stepHandlers;
+    private final Map<StepName, StepHandler> stepHandlers;
     private final ObjectMapper objectMapper;
 
     public SagaOrchestrator(SagaTransactionRepository transactionRepository,
@@ -34,7 +34,7 @@ public class SagaOrchestrator {
         this.transactionRepository = transactionRepository;
         this.stepRepository = stepRepository;
         this.objectMapper = objectMapper;
-        this.stepHandlers = new HashMap<>();
+        this.stepHandlers = new EnumMap<>(StepName.class);
         handlers.forEach(h -> stepHandlers.put(h.getStepName(), h));
     }
 
@@ -63,21 +63,21 @@ public class SagaOrchestrator {
                     "quantity", quantity,
                     "amount", amount.toString()
             ));
-            SagaStep orderStep = new SagaStep(UUID.randomUUID(), 1, "CREATE_ORDER", orderInput);
+            SagaStep orderStep = new SagaStep(UUID.randomUUID(), 1, StepName.CREATE_ORDER, orderInput);
             saga.addStep(orderStep);
 
             String inventoryInput = objectMapper.writeValueAsString(Map.of(
                     "productName", productName,
                     "quantity", quantity
             ));
-            SagaStep inventoryStep = new SagaStep(UUID.randomUUID(), 2, "RESERVE_INVENTORY", inventoryInput);
+            SagaStep inventoryStep = new SagaStep(UUID.randomUUID(), 2, StepName.RESERVE_INVENTORY, inventoryInput);
             saga.addStep(inventoryStep);
 
             String paymentInput = objectMapper.writeValueAsString(Map.of(
                     "customerId", customerId.toString(),
                     "amount", amount.toString()
             ));
-            SagaStep paymentStep = new SagaStep(UUID.randomUUID(), 3, "PROCESS_PAYMENT", paymentInput);
+            SagaStep paymentStep = new SagaStep(UUID.randomUUID(), 3, StepName.PROCESS_PAYMENT, paymentInput);
             saga.addStep(paymentStep);
 
         } catch (Exception e) {
@@ -92,11 +92,9 @@ public class SagaOrchestrator {
         saga.setStatus(SagaStatus.IN_PROGRESS);
         transactionRepository.save(saga);
 
-        List<SagaStep> steps = saga.getSteps();
-
-        for (int i = 0; i < steps.size(); i++) {
-            SagaStep step = steps.get(i);
-            saga.setCurrentStep(i + 1);
+        int stepIndex = 0;
+        for (SagaStep step : saga.getSteps()) {
+            saga.setCurrentStep(stepIndex + 1);
 
             StepHandler handler = stepHandlers.get(step.getStepName());
             if (handler == null) {
@@ -122,9 +120,10 @@ public class SagaOrchestrator {
                 stepRepository.save(step);
 
                 failSaga(saga, e.getMessage());
-                compensate(saga, i);
+                compensate(saga, stepIndex);
                 return;
             }
+            stepIndex++;
         }
 
         saga.setStatus(SagaStatus.COMPLETED);
@@ -147,11 +146,7 @@ public class SagaOrchestrator {
         saga.setStatus(SagaStatus.COMPENSATING);
         transactionRepository.save(saga);
 
-        List<SagaStep> steps = saga.getSteps();
-
-        for (int i = failedStepIndex - 1; i >= 0; i--) {
-            SagaStep step = steps.get(i);
-
+        for (SagaStep step : saga.getSteps().subList(0, failedStepIndex).reversed()) {
             if (step.getStatus() != StepStatus.COMPLETED) {
                 continue;
             }

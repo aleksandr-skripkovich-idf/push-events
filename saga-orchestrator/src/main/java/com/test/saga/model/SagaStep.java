@@ -22,7 +22,8 @@ public class SagaStep {
 
     private int stepOrder;
 
-    private String stepName;
+    @Enumerated(EnumType.STRING)
+    private StepName stepName;
 
     @Enumerated(EnumType.STRING)
     private StepStatus status;
@@ -42,7 +43,7 @@ public class SagaStep {
     public SagaStep() {
     }
 
-    public SagaStep(UUID id, int stepOrder, String stepName, String inputData) {
+    public SagaStep(UUID id, int stepOrder, StepName stepName, String inputData) {
         this.id = id;
         this.stepOrder = stepOrder;
         this.stepName = stepName;
@@ -74,11 +75,11 @@ public class SagaStep {
         this.stepOrder = stepOrder;
     }
 
-    public String getStepName() {
+    public StepName getStepName() {
         return stepName;
     }
 
-    public void setStepName(String stepName) {
+    public void setStepName(StepName stepName) {
         this.stepName = stepName;
     }
 

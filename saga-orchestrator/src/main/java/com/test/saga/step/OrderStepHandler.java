@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.saga.model.Order;
 import com.test.saga.model.SagaStep;
+import com.test.saga.model.StepName;
 import com.test.saga.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,8 @@ public class OrderStepHandler implements StepHandler {
     }
 
     @Override
-    public String getStepName() {
-        return "CREATE_ORDER";
+    public StepName getStepName() {
+        return StepName.CREATE_ORDER;
     }
 
     @Override

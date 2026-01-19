@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.saga.model.Inventory;
 import com.test.saga.model.Order;
 import com.test.saga.model.SagaStep;
+import com.test.saga.model.StepName;
 import com.test.saga.repository.InventoryRepository;
 import com.test.saga.repository.OrderRepository;
 import org.slf4j.Logger;
@@ -38,8 +39,8 @@ public class InventoryStepHandler implements StepHandler {
     }
 
     @Override
-    public String getStepName() {
-        return "RESERVE_INVENTORY";
+    public StepName getStepName() {
+        return StepName.RESERVE_INVENTORY;
     }
 
     @Override

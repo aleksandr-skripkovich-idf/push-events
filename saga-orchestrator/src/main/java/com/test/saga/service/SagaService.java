@@ -47,10 +47,10 @@ public class SagaService {
     public Map<String, Long> getStats() {
         return Map.of(
                 "total", transactionRepository.count(),
-                "completed", transactionRepository.countByStatus(SagaStatus.COMPLETED),
-                "failed", transactionRepository.countByStatus(SagaStatus.FAILED),
-                "compensated", transactionRepository.countByStatus(SagaStatus.COMPENSATED),
-                "in_progress", transactionRepository.countByStatus(SagaStatus.IN_PROGRESS)
+                SagaStatus.COMPLETED.getKey(), transactionRepository.countByStatus(SagaStatus.COMPLETED),
+                SagaStatus.FAILED.getKey(), transactionRepository.countByStatus(SagaStatus.FAILED),
+                SagaStatus.COMPENSATED.getKey(), transactionRepository.countByStatus(SagaStatus.COMPENSATED),
+                SagaStatus.IN_PROGRESS.getKey(), transactionRepository.countByStatus(SagaStatus.IN_PROGRESS)
         );
     }
 

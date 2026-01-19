@@ -57,8 +57,7 @@ public class EventBatchConfig {
                 .build();
     }
 
-    @Bean
-    public ItemReader<EventCreatedMessage> eventItemReader() {
+    private ItemReader<EventCreatedMessage> eventItemReader() {
         return new ItemReader<>() {
             private Iterator<EventCreatedMessage> iterator;
 
@@ -80,8 +79,7 @@ public class EventBatchConfig {
         };
     }
 
-    @Bean
-    public ItemProcessor<EventCreatedMessage, RegisteredEvent> eventItemProcessor() {
+    private ItemProcessor<EventCreatedMessage, RegisteredEvent> eventItemProcessor() {
         return message -> {
             log.debug("Processing event: eventId={}, type={}", message.getEventId(), message.getEventType());
 
@@ -96,8 +94,7 @@ public class EventBatchConfig {
         };
     }
 
-    @Bean
-    public ItemWriter<RegisteredEvent> eventItemWriter() {
+    private ItemWriter<RegisteredEvent> eventItemWriter() {
         return items -> {
             log.info("Batch writer: saving {} events to database", items.size());
 
